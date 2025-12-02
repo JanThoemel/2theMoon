@@ -1,0 +1,493 @@
+%General Mission Analysis Tool(GMAT) Script
+%Created: 2025-11-28 18:13:17
+
+
+%----------------------------------------
+%---------- Spacecraft
+%----------------------------------------
+
+Create Spacecraft Lander;
+GMAT Lander.DateFormat = TAIModJulian;
+GMAT Lander.Epoch = '21545';
+GMAT Lander.CoordinateSystem = EarthFixed;
+GMAT Lander.DisplayStateType = Planetodetic;
+GMAT Lander.PlanetodeticRMAG = 6377.999999999891;
+GMAT Lander.PlanetodeticLON = 170;
+GMAT Lander.PlanetodeticLAT = 18.99999569800809;
+GMAT Lander.PlanetodeticVMAG = 0.09999999999999887;
+GMAT Lander.PlanetodeticAZI = 87.32227545202427;
+GMAT Lander.PlanetodeticHFPA = 19.99999999999871;
+GMAT Lander.DryMass = 10000;
+GMAT Lander.Cd = 2.2;
+GMAT Lander.Cr = 1.8;
+GMAT Lander.DragArea = 15;
+GMAT Lander.SRPArea = 1;
+GMAT Lander.SPADDragScaleFactor = 1;
+GMAT Lander.SPADSRPScaleFactor = 1;
+GMAT Lander.AtmosDensityScaleFactor = 1;
+GMAT Lander.ExtendedMassPropertiesModel = 'None';
+GMAT Lander.Tanks = {ChemicalTank};
+GMAT Lander.NAIFId = -10000001;
+GMAT Lander.NAIFIdReferenceFrame = -9000001;
+GMAT Lander.OrbitColor = Red;
+GMAT Lander.TargetColor = Teal;
+GMAT Lander.OrbitErrorCovariance = [ 1e+70 0 0 0 0 0 ; 0 1e+70 0 0 0 0 ; 0 0 1e+70 0 0 0 ; 0 0 0 1e+70 0 0 ; 0 0 0 0 1e+70 0 ; 0 0 0 0 0 1e+70 ];
+GMAT Lander.CdSigma = 1e+70;
+GMAT Lander.CrSigma = 1e+70;
+GMAT Lander.Id = 'SatId';
+GMAT Lander.Attitude = CoordinateSystemFixed;
+GMAT Lander.SPADSRPInterpolationMethod = Bilinear;
+GMAT Lander.SPADSRPScaleFactorSigma = 1e+70;
+GMAT Lander.SPADDragInterpolationMethod = Bilinear;
+GMAT Lander.SPADDragScaleFactorSigma = 1e+70;
+GMAT Lander.AtmosDensityScaleFactorSigma = 1e+70;
+GMAT Lander.ModelFile = 'aura.3ds';
+GMAT Lander.ModelOffsetX = 0;
+GMAT Lander.ModelOffsetY = 0;
+GMAT Lander.ModelOffsetZ = 0;
+GMAT Lander.ModelRotationX = 0;
+GMAT Lander.ModelRotationY = 0;
+GMAT Lander.ModelRotationZ = 0;
+GMAT Lander.ModelScale = 1;
+GMAT Lander.AttitudeDisplayStateType = 'Quaternion';
+GMAT Lander.AttitudeRateDisplayStateType = 'AngularVelocity';
+GMAT Lander.AttitudeCoordinateSystem = EarthMJ2000Eq;
+GMAT Lander.EulerAngleSequence = '321';
+
+%----------------------------------------
+%---------- Hardware Components
+%----------------------------------------
+
+Create ChemicalTank ChemicalTank;
+GMAT ChemicalTank.AllowNegativeFuelMass = true;
+GMAT ChemicalTank.FuelMass = 80000;
+GMAT ChemicalTank.Pressure = 4000;
+GMAT ChemicalTank.Temperature = 20;
+GMAT ChemicalTank.RefTemperature = 20;
+GMAT ChemicalTank.Volume = 80;
+GMAT ChemicalTank.FuelDensity = 1260;
+GMAT ChemicalTank.PressureModel = PressureRegulated;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%----------------------------------------
+%---------- Hardware Components
+%----------------------------------------
+
+
+
+%----------------------------------------
+%---------- ForceModels
+%----------------------------------------
+
+Create ForceModel DefaultProp_ForceModel;
+GMAT DefaultProp_ForceModel.CentralBody = Earth;
+GMAT DefaultProp_ForceModel.PrimaryBodies = {Earth};
+GMAT DefaultProp_ForceModel.PointMasses = {Luna, Sun};
+GMAT DefaultProp_ForceModel.Drag = None;
+GMAT DefaultProp_ForceModel.SRP = Off;
+GMAT DefaultProp_ForceModel.RelativisticCorrection = Off;
+GMAT DefaultProp_ForceModel.ErrorControl = RSSStep;
+GMAT DefaultProp_ForceModel.GravityField.Earth.Degree = 4;
+GMAT DefaultProp_ForceModel.GravityField.Earth.Order = 4;
+GMAT DefaultProp_ForceModel.GravityField.Earth.StmLimit = 100;
+GMAT DefaultProp_ForceModel.GravityField.Earth.PotentialFile = 'JGM2.cof';
+GMAT DefaultProp_ForceModel.GravityField.Earth.TideModel = 'None';
+
+%----------------------------------------
+%---------- Propagators
+%----------------------------------------
+
+Create Propagator DefaultProp;
+GMAT DefaultProp.FM = DefaultProp_ForceModel;
+GMAT DefaultProp.Type = PrinceDormand45;
+GMAT DefaultProp.InitialStepSize = 1;
+GMAT DefaultProp.Accuracy = 9.999999999999999e-12;
+GMAT DefaultProp.MinStep = 1;
+GMAT DefaultProp.MaxStep = 2700;
+GMAT DefaultProp.MaxStepAttempts = 50;
+GMAT DefaultProp.StopIfAccuracyIsViolated = true;
+
+%----------------------------------------
+%---------- Burns
+%----------------------------------------
+
+Create ImpulsiveBurn Launch;
+GMAT Launch.CoordinateSystem = Local;
+GMAT Launch.Origin = Earth;
+GMAT Launch.Axes = VNB;
+GMAT Launch.Element1 = 10.65;
+GMAT Launch.Element2 = 0;
+GMAT Launch.Element3 = 0;
+GMAT Launch.DecrementMass = false;
+GMAT Launch.Tank = {ChemicalTank};
+GMAT Launch.Isp = 300;
+GMAT Launch.GravitationalAccel = 9.81;
+
+Create ImpulsiveBurn LOIBurn;
+GMAT LOIBurn.CoordinateSystem = Local;
+GMAT LOIBurn.Origin = Luna;
+GMAT LOIBurn.Axes = VNB;
+GMAT LOIBurn.Element1 = -0.53;
+GMAT LOIBurn.Element2 = 0;
+GMAT LOIBurn.Element3 = 0;
+GMAT LOIBurn.DecrementMass = true;
+GMAT LOIBurn.Tank = {ChemicalTank};
+GMAT LOIBurn.Isp = 300;
+GMAT LOIBurn.GravitationalAccel = 9.81;
+
+Create ImpulsiveBurn LODBurn;
+GMAT LODBurn.CoordinateSystem = Local;
+GMAT LODBurn.Origin = Earth;
+GMAT LODBurn.Axes = VNB;
+GMAT LODBurn.Element1 = -1;
+GMAT LODBurn.Element2 = 0;
+GMAT LODBurn.Element3 = 0;
+GMAT LODBurn.DecrementMass = true;
+GMAT LODBurn.Tank = {ChemicalTank};
+GMAT LODBurn.Isp = 300;
+GMAT LODBurn.GravitationalAccel = 9.81;
+
+Create ImpulsiveBurn HTBurn1;
+GMAT HTBurn1.CoordinateSystem = Local;
+GMAT HTBurn1.Origin = Earth;
+GMAT HTBurn1.Axes = VNB;
+GMAT HTBurn1.Element1 = -0.1;
+GMAT HTBurn1.Element2 = 0;
+GMAT HTBurn1.Element3 = 0;
+GMAT HTBurn1.DecrementMass = true;
+GMAT HTBurn1.Tank = {ChemicalTank};
+GMAT HTBurn1.Isp = 300;
+GMAT HTBurn1.GravitationalAccel = 9.81;
+
+Create ImpulsiveBurn HTBurn2;
+GMAT HTBurn2.CoordinateSystem = Local;
+GMAT HTBurn2.Origin = Earth;
+GMAT HTBurn2.Axes = VNB;
+GMAT HTBurn2.Element1 = -0.1;
+GMAT HTBurn2.Element2 = 0;
+GMAT HTBurn2.Element3 = 0;
+GMAT HTBurn2.DecrementMass = true;
+GMAT HTBurn2.Tank = {ChemicalTank};
+GMAT HTBurn2.Isp = 300;
+GMAT HTBurn2.GravitationalAccel = 9.81;
+
+Create ImpulsiveBurn LandingBurn;
+GMAT LandingBurn.CoordinateSystem = Local;
+GMAT LandingBurn.Origin = Earth;
+GMAT LandingBurn.Axes = VNB;
+GMAT LandingBurn.Element1 = 0;
+GMAT LandingBurn.Element2 = 0;
+GMAT LandingBurn.Element3 = 0;
+GMAT LandingBurn.DecrementMass = true;
+GMAT LandingBurn.Tank = {ChemicalTank};
+GMAT LandingBurn.Isp = 300;
+GMAT LandingBurn.GravitationalAccel = 9.81;
+
+%----------------------------------------
+%---------- Coordinate Systems
+%----------------------------------------
+
+Create CoordinateSystem lunarEq;
+GMAT lunarEq.Origin = Luna;
+GMAT lunarEq.Axes = MJ2000Ec;
+
+Create CoordinateSystem lunaFixed;
+GMAT lunaFixed.Origin = Luna;
+GMAT lunaFixed.Axes = BodyFixed;
+
+Create CoordinateSystem LunaFixed;
+GMAT LunaFixed.Origin = Luna;
+GMAT LunaFixed.Axes = BodyFixed;
+
+%----------------------------------------
+%---------- Solvers
+%----------------------------------------
+
+Create DifferentialCorrector DefaultDC;
+GMAT DefaultDC.ShowProgress = true;
+GMAT DefaultDC.ReportStyle = Normal;
+GMAT DefaultDC.ReportFile = 'DifferentialCorrectorDefaultDC.data';
+GMAT DefaultDC.MaximumIterations = 25;
+GMAT DefaultDC.DerivativeMethod = ForwardDifference;
+GMAT DefaultDC.Algorithm = NewtonRaphson;
+
+%----------------------------------------
+%---------- Subscribers
+%----------------------------------------
+
+Create OrbitView OrbitViewEarth;
+GMAT OrbitViewEarth.SolverIterations = Current;
+GMAT OrbitViewEarth.UpperLeft = [ 0.4176470588235294 0 ];
+GMAT OrbitViewEarth.Size = [ 0.5494117647058824 0.8940476190476191 ];
+GMAT OrbitViewEarth.RelativeZOrder = 2698;
+GMAT OrbitViewEarth.Maximized = false;
+GMAT OrbitViewEarth.Add = {Lander, Earth, Luna, Sun};
+GMAT OrbitViewEarth.CoordinateSystem = EarthMJ2000Ec;
+GMAT OrbitViewEarth.DrawObject = [ true true true true ];
+GMAT OrbitViewEarth.DataCollectFrequency = 1;
+GMAT OrbitViewEarth.UpdatePlotFrequency = 50;
+GMAT OrbitViewEarth.NumPointsToRedraw = 0;
+GMAT OrbitViewEarth.ShowPlot = true;
+GMAT OrbitViewEarth.MaxPlotPoints = 20000;
+GMAT OrbitViewEarth.ShowLabels = true;
+GMAT OrbitViewEarth.ViewPointReference = Earth;
+GMAT OrbitViewEarth.ViewPointVector = [ 800000 0 40000 ];
+GMAT OrbitViewEarth.ViewDirection = Earth;
+GMAT OrbitViewEarth.ViewScaleFactor = 1;
+GMAT OrbitViewEarth.ViewUpCoordinateSystem = EarthMJ2000Eq;
+GMAT OrbitViewEarth.ViewUpAxis = Z;
+GMAT OrbitViewEarth.EclipticPlane = On;
+GMAT OrbitViewEarth.XYPlane = Off;
+GMAT OrbitViewEarth.WireFrame = Off;
+GMAT OrbitViewEarth.Axes = On;
+GMAT OrbitViewEarth.Grid = Off;
+GMAT OrbitViewEarth.SunLine = Off;
+GMAT OrbitViewEarth.UseInitialView = On;
+GMAT OrbitViewEarth.StarCount = 7000;
+GMAT OrbitViewEarth.EnableStars = Off;
+GMAT OrbitViewEarth.EnableConstellations = On;
+
+Create GroundTrackPlot DefaultGroundTrackPlot;
+GMAT DefaultGroundTrackPlot.SolverIterations = Current;
+GMAT DefaultGroundTrackPlot.UpperLeft = [ 0.002941176470588235 0.4547619047619048 ];
+GMAT DefaultGroundTrackPlot.Size = [ 0.5 0.45 ];
+GMAT DefaultGroundTrackPlot.RelativeZOrder = 23;
+GMAT DefaultGroundTrackPlot.Maximized = false;
+GMAT DefaultGroundTrackPlot.Add = {Lander};
+GMAT DefaultGroundTrackPlot.DataCollectFrequency = 1;
+GMAT DefaultGroundTrackPlot.UpdatePlotFrequency = 50;
+GMAT DefaultGroundTrackPlot.NumPointsToRedraw = 0;
+GMAT DefaultGroundTrackPlot.ShowPlot = false;
+GMAT DefaultGroundTrackPlot.MaxPlotPoints = 20000;
+GMAT DefaultGroundTrackPlot.CentralBody = Earth;
+GMAT DefaultGroundTrackPlot.TextureMap = 'ModifiedBlueMarble.jpg';
+
+Create OrbitView OrbitViewLuna;
+GMAT OrbitViewLuna.SolverIterations = Current;
+GMAT OrbitViewLuna.UpperLeft = [ 0.06411764705882353 0.1619047619047619 ];
+GMAT OrbitViewLuna.Size = [ 0.5576470588235294 0.6785714285714286 ];
+GMAT OrbitViewLuna.RelativeZOrder = 2708;
+GMAT OrbitViewLuna.Maximized = false;
+GMAT OrbitViewLuna.Add = {Lander, Earth, Luna, Sun};
+GMAT OrbitViewLuna.CoordinateSystem = lunarEq;
+GMAT OrbitViewLuna.DrawObject = [ true true true true ];
+GMAT OrbitViewLuna.DataCollectFrequency = 1;
+GMAT OrbitViewLuna.UpdatePlotFrequency = 50;
+GMAT OrbitViewLuna.NumPointsToRedraw = 0;
+GMAT OrbitViewLuna.ShowPlot = true;
+GMAT OrbitViewLuna.MaxPlotPoints = 20000;
+GMAT OrbitViewLuna.ShowLabels = true;
+GMAT OrbitViewLuna.ViewPointReference = Luna;
+GMAT OrbitViewLuna.ViewPointVector = [ 30000 0 30000 ];
+GMAT OrbitViewLuna.ViewDirection = Luna;
+GMAT OrbitViewLuna.ViewScaleFactor = 1;
+GMAT OrbitViewLuna.ViewUpCoordinateSystem = EarthMJ2000Eq;
+GMAT OrbitViewLuna.ViewUpAxis = Z;
+GMAT OrbitViewLuna.EclipticPlane = On;
+GMAT OrbitViewLuna.XYPlane = Off;
+GMAT OrbitViewLuna.WireFrame = Off;
+GMAT OrbitViewLuna.Axes = On;
+GMAT OrbitViewLuna.Grid = Off;
+GMAT OrbitViewLuna.SunLine = Off;
+GMAT OrbitViewLuna.UseInitialView = On;
+GMAT OrbitViewLuna.StarCount = 7000;
+GMAT OrbitViewLuna.EnableStars = Off;
+GMAT OrbitViewLuna.EnableConstellations = On;
+
+Create OrbitView OrbitViewLunaFixed;
+GMAT OrbitViewLunaFixed.SolverIterations = Current;
+GMAT OrbitViewLunaFixed.UpperLeft = [ -0.009411764705882352 0.4869047619047619 ];
+GMAT OrbitViewLunaFixed.Size = [ 0.5576470588235294 0.6785714285714286 ];
+GMAT OrbitViewLunaFixed.RelativeZOrder = 2665;
+GMAT OrbitViewLunaFixed.Maximized = false;
+GMAT OrbitViewLunaFixed.Add = {Lander, Earth, Luna, Sun};
+GMAT OrbitViewLunaFixed.CoordinateSystem = lunaFixed;
+GMAT OrbitViewLunaFixed.DrawObject = [ true true true true ];
+GMAT OrbitViewLunaFixed.DataCollectFrequency = 1;
+GMAT OrbitViewLunaFixed.UpdatePlotFrequency = 50;
+GMAT OrbitViewLunaFixed.NumPointsToRedraw = 0;
+GMAT OrbitViewLunaFixed.ShowPlot = true;
+GMAT OrbitViewLunaFixed.MaxPlotPoints = 20000;
+GMAT OrbitViewLunaFixed.ShowLabels = true;
+GMAT OrbitViewLunaFixed.ViewPointReference = Luna;
+GMAT OrbitViewLunaFixed.ViewPointVector = [ 30000 0 30000 ];
+GMAT OrbitViewLunaFixed.ViewDirection = Luna;
+GMAT OrbitViewLunaFixed.ViewScaleFactor = 1;
+GMAT OrbitViewLunaFixed.ViewUpCoordinateSystem = EarthMJ2000Eq;
+GMAT OrbitViewLunaFixed.ViewUpAxis = Z;
+GMAT OrbitViewLunaFixed.EclipticPlane = On;
+GMAT OrbitViewLunaFixed.XYPlane = Off;
+GMAT OrbitViewLunaFixed.WireFrame = Off;
+GMAT OrbitViewLunaFixed.Axes = On;
+GMAT OrbitViewLunaFixed.Grid = Off;
+GMAT OrbitViewLunaFixed.SunLine = Off;
+GMAT OrbitViewLunaFixed.UseInitialView = On;
+GMAT OrbitViewLunaFixed.StarCount = 7000;
+GMAT OrbitViewLunaFixed.EnableStars = Off;
+GMAT OrbitViewLunaFixed.EnableConstellations = On;
+
+Create ReportFile ReportTankFuelMass;
+GMAT ReportTankFuelMass.SolverIterations = None;
+GMAT ReportTankFuelMass.UpperLeft = [ 0 0 ];
+GMAT ReportTankFuelMass.Size = [ 0 0 ];
+GMAT ReportTankFuelMass.RelativeZOrder = 0;
+GMAT ReportTankFuelMass.Maximized = false;
+GMAT ReportTankFuelMass.Filename = 'D:\projects\GMAT\Moon\2theMoon\2theMoonOutput.csv';
+GMAT ReportTankFuelMass.Precision = 16;
+GMAT ReportTankFuelMass.WriteHeaders = true;
+GMAT ReportTankFuelMass.LeftJustify = On;
+GMAT ReportTankFuelMass.ZeroFill = On;
+GMAT ReportTankFuelMass.FixedWidth = false;
+GMAT ReportTankFuelMass.Delimiter = ',';
+GMAT ReportTankFuelMass.ColumnWidth = 23;
+GMAT ReportTankFuelMass.WriteReport = true;
+
+%----------------------------------------
+%---------- Arrays, Variables, Strings
+%----------------------------------------
+Create Variable durationInitialLEOprop DVTLI DVLOI DVLOD DVHT1 DVHT2 DVLanding1 DVLanding2 DVLanding3;
+GMAT durationInitialLEOprop = 13750;
+GMAT DVTLI = 3;
+GMAT DVLOI = -0.53;
+GMAT DVLOD = -0.22;
+GMAT DVHT1 = 0.359;
+GMAT DVHT2 = -0.423;
+GMAT DVLanding1 = -1.6;
+GMAT DVLanding2 = -0.89;
+GMAT DVLanding3 = 0.179;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%----------------------------------------
+%---------- Mission Sequence
+%----------------------------------------
+
+BeginMissionSequence;
+
+Maneuver 'Launch' Launch(Lander);
+Propagate DefaultProp(Lander) {Lander.ElapsedDays = 1.5};
+Propagate 'Propa2Luna' DefaultProp(Lander) {Lander.Luna.Periapsis, OrbitColor = [0 255 0]};
+%Stop;
+Report ReportTankFuelMass Lander.DryMass Lander.ChemicalTank.FuelMass;
+
+%Target DefaultDC {SolveMode = Solve, ExitMode = DiscardAndContinue, ShowProgressWindow = true};
+%Vary 'vary launchElement1' DefaultDC(Launch.Element1 = 10.65, {Perturbation = 0.0001, Lower = 10, Upper = 11, MaxStep = 0.001, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+%Vary 'vary launchElement2' DefaultDC(Launch.Element2 = 0, {Perturbation = 0.0001, Lower = -1, Upper = 1, MaxStep = 0.01, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+%Vary 'vary launchElement3' DefaultDC(Launch.Element3 = 0, {Perturbation = 0.0001, Lower = -1, Upper = 1, MaxStep = 0.01, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+%Vary DefaultDC(Lander.TAIModJulian = 21545, {Perturbation = 0.0001, Lower = 21544, Upper = 21546, MaxStep = 0.2, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+%Vary DefaultDC(Lander.PlanetodeticAZI = 87.3, {Perturbation = 0.0001, Lower = 86, Upper = 89, MaxStep = 1, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+%Vary DefaultDC(Lander.PlanetodeticHFPA = 20, {Perturbation = 0.0001, Lower = 18, Upper = 22, MaxStep = 0.01, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+%Vary DefaultDC(Lander.PlanetodeticLAT = 19, {Perturbation = 0.0001, Lower = 16, Upper = 23, MaxStep = 0.1, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+%Vary DefaultDC(Lander.PlanetodeticLON = 170, {Perturbation = 0.0001, Lower = 160, Upper = 190, MaxStep = 0.1, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+%   Vary 'vary launchDate' DefaultDC(Lander.TAIModJulian = 21545.5, {Perturbation = 0.0001, Lower = 21543.5, Upper = 21545.5, MaxStep = 0.1, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+
+
+%Maneuver 'Launch' Launch(Lander);
+%Propagate DefaultProp(Lander) {Lander.ElapsedDays = 1.5};
+%Propagate 'Propa2Luna' DefaultProp(Lander) {Lander.Luna.Periapsis, OrbitColor = [0 255 0]};
+%Achieve 'periapsis' DefaultDC(Lander.Luna.Periapsis = 5000, {Tolerance = 3000});
+%EndTarget;  % For targeter DefaultDC
+
+%Stop;
+
+Target DefaultDC {SolveMode = Solve, ExitMode = DiscardAndContinue, ShowProgressWindow = true};
+   
+   Vary 'vary LOIElement1' DefaultDC(LOIBurn.Element1 = -1.5, {Perturbation = 0.0001, Lower = -5, Upper = 5, MaxStep = 0.2, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+   
+   Maneuver 'ManLOI' LOIBurn(Lander);
+   Propagate 'PropaInLunaOrbit' DefaultProp(Lander) {Lander.ElapsedDays = 1};
+   
+   Achieve 'AchiECC' DefaultDC(Lander.Luna.ECC = 0.6, {Tolerance = 0.35});
+   Achieve DefaultDC(Lander.Luna.SMA = 10000, {Tolerance = 5000});
+EndTarget 'Target2Moon';  % For targeter DefaultDC
+
+Report ReportTankFuelMass Lander.DryMass Lander.ChemicalTank.FuelMass;
+Propagate DefaultProp(Lander) {Lander.ElapsedDays = 2};
+
+Target DefaultDC {SolveMode = Solve, ExitMode = DiscardAndContinue, ShowProgressWindow = true};
+   Vary 'VaryHT1' DefaultDC(HTBurn1.Element1 = DVHT1, {Perturbation = 0.0001, Lower = -1, Upper = 1, MaxStep = 0.1, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+   Vary 'VaryHT2' DefaultDC(HTBurn2.Element1 = DVHT2, {Perturbation = 0.0001, Lower = -1, Upper = 1, MaxStep = 0.1, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+   
+   Maneuver 'ManH1' HTBurn1(Lander);
+   Propagate DefaultProp(Lander) {Lander.Luna.Periapsis, OrbitColor = [255 255 0]};
+   Maneuver 'ManH2' HTBurn2(Lander);
+   
+   Achieve 'AchiLLO' DefaultDC(Lander.Luna.SMA = 3000, {Tolerance = 5});
+   Achieve 'AchiECC' DefaultDC(Lander.Luna.ECC = 0.1, {Tolerance = 0.05});
+EndTarget 'TargetLLO';  % For targeter DefaultDC
+
+Report ReportTankFuelMass Lander.DryMass Lander.ChemicalTank.FuelMass;
+Propagate 'PropaInLunaOrbit2' DefaultProp(Lander) {Lander.ElapsedDays = 1};
+
+Target DefaultDC {SolveMode = Solve, ExitMode = DiscardAndContinue, ShowProgressWindow = true};
+   Vary 'Vary LOD' DefaultDC(LODBurn.Element1 = DVLOD, {Perturbation = 0.0001, Lower = -1, Upper = 1, MaxStep = 0.2, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+   
+   Propagate DefaultProp(Lander) {Lander.LunaFixed.PlanetodeticLAT = 0};
+   Maneuver 'ManLOD' LODBurn(Lander);
+   Propagate 'PropaLanding' DefaultProp(Lander) {Lander.Luna.Periapsis, OrbitColor = [0 255 0]};
+   
+   Achieve 'AchiAlt' DefaultDC(Lander.Luna.Altitude = 0, {Tolerance = 10});
+EndTarget 'Target2LunaSurf';  % For targeter DefaultDC
+
+Report ReportTankFuelMass Lander.DryMass Lander.ChemicalTank.FuelMass;
+
+Target DefaultDC {SolveMode = Solve, ExitMode = DiscardAndContinue, ShowProgressWindow = true};
+   Vary 'Vary LandingBurnE1' DefaultDC(LandingBurn.Element1 = 0, {Perturbation = 0.0001, Lower = -3, Upper = 3, MaxStep = 0.1, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+   Vary 'Vary LandingBurnE2' DefaultDC(LandingBurn.Element2 = 0, {Perturbation = 0.0001, Lower = -3, Upper = 3, MaxStep = 0.1, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+   Vary 'Vary LandingBurnE3' DefaultDC(LandingBurn.Element3 = 0, {Perturbation = 0.0001, Lower = -3, Upper = 3, MaxStep = 0.1, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+   
+   Maneuver 'ManLanding' LandingBurn(Lander);
+   
+   Achieve 'AchiZeroSpeed' DefaultDC(Lander.lunaFixed.VMAG = 0, {Tolerance = 0.1});
+EndTarget 'TargetLanding';  % For targeter DefaultDC
+
+Report ReportTankFuelMass Lander.DryMass Lander.ChemicalTank.FuelMass;
