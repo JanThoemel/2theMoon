@@ -11,13 +11,13 @@ GMAT Lander.DateFormat = TAIModJulian;
 GMAT Lander.Epoch = '21545';
 GMAT Lander.CoordinateSystem = EarthFixed;
 GMAT Lander.DisplayStateType = Planetodetic;
-GMAT Lander.PlanetodeticRMAG = 6377.999999999891;
+GMAT Lander.PlanetodeticRMAG = 6377.999999999889;
 GMAT Lander.PlanetodeticLON = 170;
-GMAT Lander.PlanetodeticLAT = 18.99999569800809;
-GMAT Lander.PlanetodeticVMAG = 0.09999999999999887;
+GMAT Lander.PlanetodeticLAT = 18.99999530691803;
+GMAT Lander.PlanetodeticVMAG = 0.09999999999999898;
 GMAT Lander.PlanetodeticAZI = 87.32227545202427;
-GMAT Lander.PlanetodeticHFPA = 19.99999999999871;
-GMAT Lander.DryMass = 10000;
+GMAT Lander.PlanetodeticHFPA = 19.99999999999868;
+GMAT Lander.DryMass = 2300;
 GMAT Lander.Cd = 2.2;
 GMAT Lander.Cr = 1.8;
 GMAT Lander.DragArea = 15;
@@ -60,13 +60,14 @@ GMAT Lander.EulerAngleSequence = '321';
 
 Create ChemicalTank ChemicalTank;
 GMAT ChemicalTank.AllowNegativeFuelMass = true;
-GMAT ChemicalTank.FuelMass = 80000;
+GMAT ChemicalTank.FuelMass = 7700;
 GMAT ChemicalTank.Pressure = 4000;
 GMAT ChemicalTank.Temperature = 20;
 GMAT ChemicalTank.RefTemperature = 20;
-GMAT ChemicalTank.Volume = 80;
+GMAT ChemicalTank.Volume = 8;
 GMAT ChemicalTank.FuelDensity = 1260;
 GMAT ChemicalTank.PressureModel = PressureRegulated;
+
 
 
 
@@ -252,9 +253,9 @@ GMAT DefaultDC.Algorithm = NewtonRaphson;
 
 Create OrbitView OrbitViewEarth;
 GMAT OrbitViewEarth.SolverIterations = Current;
-GMAT OrbitViewEarth.UpperLeft = [ 0.4176470588235294 0 ];
-GMAT OrbitViewEarth.Size = [ 0.5494117647058824 0.8940476190476191 ];
-GMAT OrbitViewEarth.RelativeZOrder = 2698;
+GMAT OrbitViewEarth.UpperLeft = [ 0.4170588235294118 0 ];
+GMAT OrbitViewEarth.Size = [ 0.5494117647058824 0.89375 ];
+GMAT OrbitViewEarth.RelativeZOrder = 12;
 GMAT OrbitViewEarth.Maximized = false;
 GMAT OrbitViewEarth.Add = {Lander, Earth, Luna, Sun};
 GMAT OrbitViewEarth.CoordinateSystem = EarthMJ2000Ec;
@@ -299,9 +300,9 @@ GMAT DefaultGroundTrackPlot.TextureMap = 'ModifiedBlueMarble.jpg';
 
 Create OrbitView OrbitViewLuna;
 GMAT OrbitViewLuna.SolverIterations = Current;
-GMAT OrbitViewLuna.UpperLeft = [ 0.06411764705882353 0.1619047619047619 ];
-GMAT OrbitViewLuna.Size = [ 0.5576470588235294 0.6785714285714286 ];
-GMAT OrbitViewLuna.RelativeZOrder = 2708;
+GMAT OrbitViewLuna.UpperLeft = [ 0.06352941176470588 0.1614583333333333 ];
+GMAT OrbitViewLuna.Size = [ 0.5576470588235294 0.678125 ];
+GMAT OrbitViewLuna.RelativeZOrder = 110;
 GMAT OrbitViewLuna.Maximized = false;
 GMAT OrbitViewLuna.Add = {Lander, Earth, Luna, Sun};
 GMAT OrbitViewLuna.CoordinateSystem = lunarEq;
@@ -331,9 +332,9 @@ GMAT OrbitViewLuna.EnableConstellations = On;
 
 Create OrbitView OrbitViewLunaFixed;
 GMAT OrbitViewLunaFixed.SolverIterations = Current;
-GMAT OrbitViewLunaFixed.UpperLeft = [ -0.009411764705882352 0.4869047619047619 ];
-GMAT OrbitViewLunaFixed.Size = [ 0.5576470588235294 0.6785714285714286 ];
-GMAT OrbitViewLunaFixed.RelativeZOrder = 2665;
+GMAT OrbitViewLunaFixed.UpperLeft = [ -0.008823529411764706 0.4854166666666667 ];
+GMAT OrbitViewLunaFixed.Size = [ 0.5576470588235294 0.678125 ];
+GMAT OrbitViewLunaFixed.RelativeZOrder = 7;
 GMAT OrbitViewLunaFixed.Maximized = false;
 GMAT OrbitViewLunaFixed.Add = {Lander, Earth, Luna, Sun};
 GMAT OrbitViewLunaFixed.CoordinateSystem = lunaFixed;
@@ -407,6 +408,7 @@ GMAT DVLanding3 = 0.179;
 
 
 
+
 %----------------------------------------
 %---------- Mission Sequence
 %----------------------------------------
@@ -446,8 +448,8 @@ Target DefaultDC {SolveMode = Solve, ExitMode = DiscardAndContinue, ShowProgress
    Maneuver 'ManLOI' LOIBurn(Lander);
    Propagate 'PropaInLunaOrbit' DefaultProp(Lander) {Lander.ElapsedDays = 1};
    
-   Achieve 'AchiECC' DefaultDC(Lander.Luna.ECC = 0.6, {Tolerance = 0.35});
-   Achieve DefaultDC(Lander.Luna.SMA = 10000, {Tolerance = 5000});
+   Achieve 'AchiECC' DefaultDC(Lander.Luna.ECC = 0.4, {Tolerance = 0.2});
+   Achieve DefaultDC(Lander.Luna.SMA = 8000, {Tolerance = 1000});
 EndTarget 'Target2Moon';  % For targeter DefaultDC
 
 Report ReportTankFuelMass Lander.DryMass Lander.ChemicalTank.FuelMass;

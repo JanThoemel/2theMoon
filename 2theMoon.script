@@ -17,7 +17,7 @@ GMAT Lander.INC = 0;
 GMAT Lander.RAAN = 0;
 GMAT Lander.AOP = 0;
 GMAT Lander.TA = 0;
-GMAT Lander.DryMass = 10000;
+GMAT Lander.DryMass = 20000;
 GMAT Lander.Cd = 2.2;
 GMAT Lander.Cr = 1.8;
 GMAT Lander.DragArea = 15;
@@ -60,13 +60,14 @@ GMAT Lander.EulerAngleSequence = '321';
 
 Create ChemicalTank ChemicalTank;
 GMAT ChemicalTank.AllowNegativeFuelMass = true;
-GMAT ChemicalTank.FuelMass = 80000;
+GMAT ChemicalTank.FuelMass = 200000;
 GMAT ChemicalTank.Pressure = 4000;
 GMAT ChemicalTank.Temperature = 20;
 GMAT ChemicalTank.RefTemperature = 20;
-GMAT ChemicalTank.Volume = 80;
+GMAT ChemicalTank.Volume = 200;
 GMAT ChemicalTank.FuelDensity = 1260;
 GMAT ChemicalTank.PressureModel = PressureRegulated;
+
 
 
 
@@ -231,9 +232,9 @@ GMAT DefaultDC.Algorithm = NewtonRaphson;
 
 Create OrbitView OrbitViewEarth;
 GMAT OrbitViewEarth.SolverIterations = Current;
-GMAT OrbitViewEarth.UpperLeft = [ 0.4511764705882353 0.0761904761904762 ];
-GMAT OrbitViewEarth.Size = [ 0.4923529411764706 0.8964285714285715 ];
-GMAT OrbitViewEarth.RelativeZOrder = 558;
+GMAT OrbitViewEarth.UpperLeft = [ 0.4505882352941176 0.07604166666666666 ];
+GMAT OrbitViewEarth.Size = [ 0.4923529411764706 0.8958333333333334 ];
+GMAT OrbitViewEarth.RelativeZOrder = 376;
 GMAT OrbitViewEarth.Maximized = false;
 GMAT OrbitViewEarth.Add = {Lander, Earth, Luna, Sun};
 GMAT OrbitViewEarth.CoordinateSystem = EarthMJ2000Ec;
@@ -278,9 +279,9 @@ GMAT DefaultGroundTrackPlot.TextureMap = 'ModifiedBlueMarble.jpg';
 
 Create OrbitView OrbitViewLuna;
 GMAT OrbitViewLuna.SolverIterations = Current;
-GMAT OrbitViewLuna.UpperLeft = [ 0.1841176470588235 0.35 ];
-GMAT OrbitViewLuna.Size = [ 0.5 0.6797619047619048 ];
-GMAT OrbitViewLuna.RelativeZOrder = 632;
+GMAT OrbitViewLuna.UpperLeft = [ 0.1835294117647059 0.3489583333333333 ];
+GMAT OrbitViewLuna.Size = [ 0.5 0.6791666666666667 ];
+GMAT OrbitViewLuna.RelativeZOrder = 389;
 GMAT OrbitViewLuna.Maximized = false;
 GMAT OrbitViewLuna.Add = {Lander, Earth, Luna, Sun};
 GMAT OrbitViewLuna.CoordinateSystem = lunarEq;
@@ -310,9 +311,9 @@ GMAT OrbitViewLuna.EnableConstellations = On;
 
 Create OrbitView OrbitViewLunaFixed;
 GMAT OrbitViewLunaFixed.SolverIterations = Current;
-GMAT OrbitViewLunaFixed.UpperLeft = [ 0.3576470588235294 0.1369047619047619 ];
-GMAT OrbitViewLunaFixed.Size = [ 0.5 0.6797619047619048 ];
-GMAT OrbitViewLunaFixed.RelativeZOrder = 563;
+GMAT OrbitViewLunaFixed.UpperLeft = [ 0.3570588235294118 0.1364583333333333 ];
+GMAT OrbitViewLunaFixed.Size = [ 0.5 0.6791666666666667 ];
+GMAT OrbitViewLunaFixed.RelativeZOrder = 381;
 GMAT OrbitViewLunaFixed.Maximized = false;
 GMAT OrbitViewLunaFixed.Add = {Lander, Earth, Luna, Sun};
 GMAT OrbitViewLunaFixed.CoordinateSystem = lunaFixed;
@@ -369,6 +370,7 @@ GMAT DVHT2 = -0.423;
 GMAT DVLanding1 = -1.6;
 GMAT DVLanding2 = -0.89;
 GMAT DVLanding3 = 0.179;
+
 
 
 
