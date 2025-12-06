@@ -11,12 +11,12 @@ GMAT Lander.DateFormat = TAIModJulian;
 GMAT Lander.Epoch = '21545';
 GMAT Lander.CoordinateSystem = EarthFixed;
 GMAT Lander.DisplayStateType = Planetodetic;
-GMAT Lander.PlanetodeticRMAG = 6377.999999999884;
+GMAT Lander.PlanetodeticRMAG = 6377.999999999877;
 GMAT Lander.PlanetodeticLON = 170;
-GMAT Lander.PlanetodeticLAT = 18.99999452473797;
-GMAT Lander.PlanetodeticVMAG = 0.09999999999999916;
-GMAT Lander.PlanetodeticAZI = 87.32227545202429;
-GMAT Lander.PlanetodeticHFPA = 19.99999999999862;
+GMAT Lander.PlanetodeticLAT = 18.999993742558;
+GMAT Lander.PlanetodeticVMAG = 0.09999999999999927;
+GMAT Lander.PlanetodeticAZI = 87.3222754520243;
+GMAT Lander.PlanetodeticHFPA = 19.99999999999861;
 GMAT Lander.DryMass = 2300;
 GMAT Lander.Cd = 2.2;
 GMAT Lander.Cr = 1.8;
@@ -67,6 +67,8 @@ GMAT ChemicalTank.RefTemperature = 20;
 GMAT ChemicalTank.Volume = 8;
 GMAT ChemicalTank.FuelDensity = 1260;
 GMAT ChemicalTank.PressureModel = PressureRegulated;
+
+
 
 
 
@@ -413,17 +415,38 @@ GMAT DVLanding3 = 0.179;
 
 
 
+
+
 %----------------------------------------
 %---------- Mission Sequence
 %----------------------------------------
 
 BeginMissionSequence;
+Target DefaultDC {SolveMode = Solve, ExitMode = DiscardAndContinue, ShowProgressWindow = true};
+	Vary 'vary launchElement1' DefaultDC(Launch.Element1 = 10.65, {Perturbation = 0.0001, Lower = 10, Upper = 11, MaxStep = 0.001, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+	Vary 'vary launchElement2' DefaultDC(Launch.Element2 = 0, {Perturbation = 0.0001, Lower = -1, Upper = 1, MaxStep = 0.01, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+	Vary 'vary launchElement3' DefaultDC(Launch.Element3 = 0, {Perturbation = 0.0001, Lower = -1, Upper = 1, MaxStep = 0.01, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
 
-Maneuver 'Launch' Launch(Lander);
-Propagate DefaultProp(Lander) {Lander.ElapsedDays = 1.5};
-Propagate 'Propa2Luna' DefaultProp(Lander) {Lander.Luna.Periapsis, OrbitColor = [0 255 0]};
+	Maneuver 'Launch' Launch(Lander);
+	Propagate DefaultProp(Lander) {Lander.ElapsedDays = 1.5};
+	Propagate 'Propa2Luna' DefaultProp(Lander) {Lander.Luna.Periapsis, OrbitColor = [255 255 0]};
 %Stop;
-Report ReportTankFuelMass Lander.DryMass Lander.ChemicalTank.FuelMass;
+	Report ReportTankFuelMass Lander.DryMass Lander.ChemicalTank.FuelMass;
+		Achieve 'AchiBdotR' DefaultDC(Lander.lunarEq.BdotR = 0, {Tolerance = 3000});
+		Achieve 'AchiBDotT' DefaultDC(Lander.lunarEq.BdotT = 15000, {Tolerance = 7000});
+
+EndTarget;  % For targeter DefaultDC
+
+
+%org
+%Maneuver 'Launch' Launch(Lander);
+%Propagate DefaultProp(Lander) {Lander.ElapsedDays = 1.5};
+%Propagate 'Propa2Luna' DefaultProp(Lander) {Lander.Luna.Periapsis, OrbitColor = [255 255 0]};
+%%Stop;
+%Report ReportTankFuelMass Lander.DryMass Lander.ChemicalTank.FuelMass;
+%end org
+
+
 
 %Target DefaultDC {SolveMode = Solve, ExitMode = DiscardAndContinue, ShowProgressWindow = true};
 %Vary 'vary launchElement1' DefaultDC(Launch.Element1 = 10.65, {Perturbation = 0.0001, Lower = 10, Upper = 11, MaxStep = 0.001, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
@@ -450,14 +473,14 @@ Target DefaultDC {SolveMode = Solve, ExitMode = DiscardAndContinue, ShowProgress
    Vary 'vary LOIElement1' DefaultDC(LOIBurn.Element1 = -1.5, {Perturbation = 0.0001, Lower = -5, Upper = 5, MaxStep = 0.2, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
    
    Maneuver 'ManLOI' LOIBurn(Lander);
-   Propagate 'PropaInLunaOrbit' DefaultProp(Lander) {Lander.ElapsedDays = 1};
+   Propagate 'PropaInLunaOrbit' DefaultProp(Lander) {Lander.ElapsedDays = 1, OrbitColor = [128 0 255]};
    
    Achieve 'AchiECC' DefaultDC(Lander.Luna.ECC = 0.4, {Tolerance = 0.2});
    Achieve DefaultDC(Lander.Luna.SMA = 8000, {Tolerance = 1000});
 EndTarget 'Target2Moon';  % For targeter DefaultDC
 
 Report ReportTankFuelMass Lander.DryMass Lander.ChemicalTank.FuelMass;
-Propagate DefaultProp(Lander) {Lander.ElapsedDays = 2};
+Propagate DefaultProp(Lander) {Lander.ElapsedDays = 2, OrbitColor = [0 128 255]};
 
 Target DefaultDC {SolveMode = Solve, ExitMode = DiscardAndContinue, ShowProgressWindow = true};
    Vary 'VaryHT1' DefaultDC(HTBurn1.Element1 = DVHT1, {Perturbation = 0.0001, Lower = -1, Upper = 1, MaxStep = 0.1, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
